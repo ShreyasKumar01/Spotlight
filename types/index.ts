@@ -26,8 +26,7 @@ export type CreateUserParams = {
       endDateTime: Date
       cityId: string
       price: string
-      isFree: boolean
-      url: string
+      spaces: string
     }
     path: string
   }
@@ -44,8 +43,7 @@ export type CreateUserParams = {
       endDateTime: Date
       cityId: string
       price: string
-      isFree: boolean
-      url: string
+      spaces: string
     }
     path: string
   }
@@ -80,12 +78,11 @@ export type CreateUserParams = {
     title: string
     description: string
     price: string
-    isFree: boolean
     imageUrl: string
     location: string
     startDateTime: Date
     endDateTime: Date
-    url: string
+    spaces: string
     organizer: {
       _id: string
       firstName: string
@@ -107,7 +104,6 @@ export type CreateUserParams = {
     parkingName: string
     parkingId: string
     price: string
-    isFree: boolean
     buyerId: string
   }
   
