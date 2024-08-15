@@ -25,7 +25,7 @@ export const DeleteConfirmation = ({ parkingId }: { parkingId: string }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-      <Image src="/assets/icons/delete.svg" alt="delete" width={20} height={20} />
+      <Image src="/assets/icons/delete.svg" alt="delete" width={20} height={20} className='transition-transform duration-300 ease-in-out hover:scale-125'/>
         
       </AlertDialogTrigger>
 

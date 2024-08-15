@@ -54,35 +54,6 @@ export const getParkingById = async (parkingId: string) =>{
     }
 }
 
-export const getAllParkings = async ({query, limit= 6, page, city}: GetAllParkingsParams) =>{
-    try{
-        await connectToDatabase();
-
-        const titleCondition = query ? { title: { $regex: query, $options: 'i' } } : {}
-        const cityCondition = city ? await getCityByName(city) : null
-        const conditions = {
-        $and: [titleCondition, cityCondition ? { city: cityCondition._id } : {}],
-        }
-
-        const skipAmount = (Number(page) - 1) * limit
-
-        const parkingQuery = Parking.find(conditions)
-        .sort({createdAt: 'desc'})
-        .skip(skipAmount)
-        .limit(limit);
-
-        const parkings = await populateParking(parkingQuery);
-        const parkingsCount = await Parking.countDocuments(conditions);
-        
-        return {
-            data: JSON.parse(JSON.stringify(parkings)),
-            totalPages: Math.ceil(parkingsCount/(limit)),
-        }
-    }catch(error){
-        handleError(error);
-    }
-}
-
 export const deleteParking = async ({parkingId, path}: DeleteParkingParams) =>{
     try{
         await connectToDatabase();
@@ -117,7 +88,35 @@ export async function updateParking({ userId, parking, path }: UpdateParkingPara
     } catch (error) {
       handleError(error);
     }
-  }
+}
+
+  export async function getAllParkings({ query, limit = 6, page, city }: GetAllParkingsParams) {
+    try {
+      await connectToDatabase()
+  
+      const nameCondition = query ? { name: { $regex: query, $options: 'i' } } : {}
+      const cityCondition = city ? await getCityByName(city) : null
+      const conditions = {
+        $and: [nameCondition, cityCondition ? { city: cityCondition._id } : {}],
+      }
+  
+      const skipAmount = (Number(page) - 1) * limit
+      const parkingsQuery = Parking.find(conditions)
+        .sort({ createdAt: 'desc' })
+        .skip(skipAmount)
+        .limit(limit)
+  
+      const events = await populateParking(parkingsQuery)
+      const eventsCount = await Parking.countDocuments(conditions)
+  
+      return {
+        data: JSON.parse(JSON.stringify(events)),
+        totalPages: Math.ceil(eventsCount / limit),
+      }
+    } catch (error) {
+      handleError(error)
+    }
+}
 
 export async function getRelatedParkingsByCity({
     cityId,
@@ -164,5 +163,4 @@ export async function getParkingsByUser({ userId, limit = 6, page }: GetParkings
     } catch (error) {
       handleError(error)
     }
-  }
-
+}

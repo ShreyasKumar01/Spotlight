@@ -31,9 +31,9 @@ const Footer = () => {
                         <h4>Contact Us</h4>
                         <ul>
                             <li> <a href="#">Contact Number: 9998884444</a></li>
-                            <li> <a href="#">Instagram: @Aarogyam</a></li>
-                            <li> <a href="#">Facebook: Aarogyam Lucknow </a></li>
-                            <li> <a href="#">Email: aarogyaminitiative@gmail.com</a></li>
+                            <li> <a href="#">Instagram: @Spotlight</a></li>
+                            <li> <a href="#">Facebook: Spotlight </a></li>
+                            <li> <a href="#">Email: spotlight773@gmail.com</a></li>
                         </ul>
                     </div>
                     <div className="footer-col">

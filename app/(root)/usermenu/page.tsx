@@ -1,13 +1,22 @@
 import Collection from '@/components/shared/Collection'
 import { Button } from '@/components/ui/button'
+import { getOrdersByUser } from '@/lib/actions/order.actions'
 import { getParkingsByUser } from '@/lib/actions/parking.actions'
+import { IOrder } from '@/lib/database/models/order.model'
+import { SearchParamProps } from '@/types'
 import { auth } from '@clerk/nextjs/server'
-import Link from 'next/link'
 import React from 'react'
 
-const page = async () => {
+const page = async ({ searchParams }: SearchParamProps) => {
     const {sessionClaims} = auth();
     const userId = sessionClaims?.userId as string;
+
+    const ordersPage = Number(searchParams?.ordersPage) || 1;
+    const parkingsPage = Number(searchParams?.parkingsPage) || 1;
+  
+    const orders = await getOrdersByUser({ userId, page: ordersPage})
+  
+    const orderedParkings = orders?.data.map((order: IOrder) => order.parking) || [];
 
     const uploadedParkings = await getParkingsByUser({userId, page:1});
   return (
@@ -24,17 +33,18 @@ const page = async () => {
             </Button> */}
         </div>
       </section>
-      {/* <section className='wrapper my-8'>
+      <section className='wrapper my-8'>
       <Collection
-        data={parkings?.data}
+        data={orderedParkings}
         emptyTitle="No tickets purchased by you.."
         emptyStateSubtext=""
         collectionType="My_Parkings"
         limit={6}
-        page={1}
+        page={ordersPage}
+        urlParamName="ordersPage"
         totalPages={2}
         />
-      </section> */}
+      </section>
 
       <section className="bg-primary-50 bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center text-center">
@@ -55,9 +65,9 @@ const page = async () => {
         emptyStateSubtext="Upload a Parking"
         collectionType="Parkings_Organized"
         limit={6}
-        page={1}
+        page={parkingsPage}
         urlParamName="parkingsPage"
-        totalPages={2}
+        totalPages={uploadedParkings?.totalPages}
         />
       </section>
     </>

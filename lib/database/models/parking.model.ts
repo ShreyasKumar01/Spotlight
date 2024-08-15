@@ -25,7 +25,7 @@ const ParkingSchema = new Schema<IParking>({
   endDateTime: { type: Date, default: Date.now },
   price: { type: String },
   spaces: { type: String },
-  city: { type: Schema.Types.ObjectId, ref: 'Category' },
+  city: { type: Schema.Types.ObjectId, ref: 'City' },
   postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 

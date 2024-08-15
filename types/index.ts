@@ -108,16 +108,21 @@ export type CreateUserParams = {
   }
   
   export type CreateOrderParams = {
-    stripeId: string
-    parkingId: string
-    buyerId: string
-    totalAmount: string
-    createdAt: Date
+    order:{
+      vehicleName: string;
+      vehicleCompany: string;
+      vehicleNumber: string;
+      vehicleType?: string;
+      startDateTime: Date;
+      endDateTime: Date;
+    }
+    parkingId: string;
+    buyerId: string;
   }
   
-  export type GetOrdersByParkingParams = {
-    parkingId: string
+  export type GetOrdersByParkingParams =  {
     searchString: string
+    parkingId: string
   }
   
   export type GetOrdersByUserParams = {
