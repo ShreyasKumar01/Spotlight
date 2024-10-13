@@ -6,7 +6,7 @@ import City from "../database/models/city.model";
 import Parking from "../database/models/parking.model";
 import User from "../database/models/user.model";
 import { handleError } from "../utils"
-import {CreateParkingParams, DeleteParkingParams, GetAllParkingsParams, GetParkingsByUserParams, GetRelatedParkingsByCityParams, UpdateParkingParams} from '@/types'
+import {CreateParkingParams, DeleteParkingParams, GetAllParkingsParams, GetParkingsByUserParams, GetRelatedParkingsByCityParams, ReviewParams, UpdateParkingParams} from '@/types'
 
 const populateParking = async (query: any) =>{
     return query.populate({path: 'postedBy', model: User, select: '_id firstName lastName'})
@@ -163,4 +163,36 @@ export async function getParkingsByUser({ userId, limit = 6, page }: GetParkings
     } catch (error) {
       handleError(error)
     }
+}
+
+export async function addReview({ userId, parkingId, review }: ReviewParams) {
+  try {
+    await connectToDatabase()
+
+    const reviewParking = await Parking.findById(parkingId)
+    if (!reviewParking) {
+      throw new Error('Parking does not exist')
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      throw new Error('User does not exist')
+    }
+
+    const newReview = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      review: review
+    }
+
+    const reviewedParking = await Parking.findByIdAndUpdate(
+      parkingId,
+      { $push: { reviews: newReview } },
+      { new: true }
+    )
+
+    return JSON.parse(JSON.stringify(reviewedParking))
+  } catch (error) {
+    handleError(error)
+  }
 }

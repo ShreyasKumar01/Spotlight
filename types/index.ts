@@ -48,6 +48,12 @@ export type CreateUserParams = {
     path: string
   }
   
+  export type ReviewParams = {
+  userId: string;
+  parkingId: string;  // Change this from parking object to just parkingId
+  review: string;
+  };
+
   export type DeleteParkingParams = {
     parkingId: string
     path: string
@@ -146,4 +152,9 @@ export type CreateUserParams = {
   export type SearchParamProps = {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
+  }
+
+  export type FAQParams = {
+    question: string
+    answer: string
   }

@@ -20,6 +20,10 @@ const Collection = ({
     data, emptyTitle, emptyStateSubtext, page, totalPages=0, collectionType,
     urlParamName 
 }:CollectionProps) => {
+  if(collectionType==='Parkings_Organized')
+    console.log('Parkings_Organized');
+  if(collectionType==='My_Parkings')
+    console.log('MYnjkashfjh');
   return (
     <>
       {data.length>0?(

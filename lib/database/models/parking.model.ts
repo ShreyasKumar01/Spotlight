@@ -1,5 +1,12 @@
 import { Schema, model, models, Document } from 'mongoose';
 
+const ReviewSchema = new Schema({
+  _id: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  review: { type: String, required: true }
+});
+
 export interface IParking extends Document {
   _id: string;
   name: string;
@@ -13,6 +20,12 @@ export interface IParking extends Document {
   spaces?: string;
   city: {_id: string, name:string};
   postedBy: {_id: string, firstName: string, lastName: string};
+  reviews?: Array<{
+    _id?: string; 
+    firstName: string;
+    lastName: string;
+    review: string;
+  }>;
 }
 
 const ParkingSchema = new Schema<IParking>({
@@ -27,6 +40,7 @@ const ParkingSchema = new Schema<IParking>({
   spaces: { type: String },
   city: { type: Schema.Types.ObjectId, ref: 'City' },
   postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+  reviews:[ReviewSchema]
 });
 
 const Parking = models.Parking || model<IParking>('Parking', ParkingSchema);
